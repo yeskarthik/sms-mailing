@@ -1,5 +1,5 @@
 import imaplib
-
+import MySQLdb
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEBase import MIMEBase
@@ -61,16 +61,39 @@ status, response = imap_server.status('INBOX', "(UNSEEN)")
 unreadcount = int(response[0].split()[2].strip(').,]'))
 print unreadcount
 
-email_ids = imap_server.search(None,'ALL' )
-email_id=(email_ids[1][0].split(' '))
+def getunseenmails():
+    email_ids = imap_server.search(None,"(UNSEEN)" )
+    email_id=(email_ids[1][0].split(' '))
+    return email_id
+
+def getallmails():
+    email_ids=imap_server.search(None,"ALL")
+    email_id=(email_ids[1][0].split(' '))
+    return email_id
+
+folderlist=imap_server.list()
+
+
+email_id=getallmails()
 
 print email_id
 
-allsubs=get_froms(email_id)
+allsubs=get_subjects(email_id)
+allfroms=get_froms(email_id)
+i=0
 
-for sub in allsubs:
-    print sub
- 
+while i<len(email_id):
+    print 'Mail No. :',i
+    print '\nFrom :'
+    print allfroms[i]
+    print '\nSubject : '
+    print allsubs[i]
+    i+=1
+
+'''for i in email_id:
+    print allfroms[i]
+    print '\n',allsubjects[i]
+   ''' 
 imap_server.logout()
 '''for sub in allsubs:
     print sub
