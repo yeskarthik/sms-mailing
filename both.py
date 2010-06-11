@@ -47,9 +47,9 @@ class CountLettersApp(object):
     def __init__(self, modem):
         self.modem = modem
 
-    def incoming(self, msg):
+    #def incoming(self, msg):
         #msg.respond("Thanks for those %d characters!" %\
-            len(msg.text)
+         #   len(msg.text)
 
     def serve_forever(self):
         while True:
@@ -58,9 +58,13 @@ class CountLettersApp(object):
 
             if msg is not None:
                 print "Got Message: %r" % (msg)
-		print msg
+		print msg, ' mailing'
+		sender=msg.sender
+		received=msg.received
+		print received,'\n'
+  		print sender
                 mail("vignesh2510raju@gmail.com",msg.text[:10],msg.text[11:],"")
-                self.incoming(msg)
+                #self.incoming(msg)
 
             time.sleep(2)
 
