@@ -10,6 +10,7 @@ import os
 username='internatrails@gmail.com'
 password='mambalam'
 
+#Mail to any person using this function (SMTP)
 def mail(to, subject, text, attach):
    msg = MIMEMultipart()
 
@@ -27,7 +28,7 @@ def mail(to, subject, text, attach):
    # Should be mailServer.quit(), but that crashes...
    mailServer.close()
 
-
+# Get emails for the list of email_ids passed
 def get_emails(email_ids):
     data = []
     for e_id in email_ids:
@@ -35,6 +36,7 @@ def get_emails(email_ids):
         data.append(response[0][1])
     return data
 
+# Get only the subjects of the list of email_ids passed
 def get_subjects(email_ids):
     subjects = []
     for e_id in email_ids:
@@ -43,6 +45,7 @@ def get_subjects(email_ids):
 
     return subjects
 
+# Get the sender Email ids of the list of email_ids passed
 def get_froms(email_ids):
     froms = []
     for e_id in email_ids:
@@ -55,22 +58,26 @@ imap_server = imaplib.IMAP4_SSL("imap.gmail.com",993)
 
 imap_server.login(username,password)
 
+# Select the particular mailbox from the list of available mailboxes
 imap_server.select('INBOX')
 
 status, response = imap_server.status('INBOX', "(UNSEEN)")
 unreadcount = int(response[0].split()[2].strip(').,]'))
 print unreadcount
 
+# Get the list of Unread mails alone
 def getunseenmails():
     email_ids = imap_server.search(None,"(UNSEEN)" )
     email_id=(email_ids[1][0].split(' '))
     return email_id
 
+# Get all the mails in the selected mailbox
 def getallmails():
     email_ids=imap_server.search(None,"ALL")
     email_id=(email_ids[1][0].split(' '))
     return email_id
 
+# This variable holds the list of all the available mailboxes
 folderlist=imap_server.list()
 
 
@@ -80,8 +87,10 @@ print email_id
 
 allsubs=get_subjects(email_id)
 allfroms=get_froms(email_id)
+
 i=0
 
+# Displaying Sender and the SUbjects of allmails in the mailbox
 while i<len(email_id):
     print 'Mail No. :',i
     print '\nFrom :'
