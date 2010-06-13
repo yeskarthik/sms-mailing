@@ -10,6 +10,12 @@ import os
 username='internatrails@gmail.com'
 password='mambalam'
 
+db = MySQLdb.connect(host="localhost", port=3306, user="root", passwd="ssn", db="smsmail")
+
+cursor=db.cursor()
+cursor.execute("use smsmail")
+
+
 #Mail to any person using this function (SMTP)
 def mail(to, subject, text, attach):
    msg = MIMEMultipart()
@@ -85,18 +91,23 @@ email_id=getallmails()
 
 print email_id
 
+
+
 allsubs=get_subjects(email_id)
 allfroms=get_froms(email_id)
 
 i=0
 
+
 # Displaying Sender and the SUbjects of allmails in the mailbox
 while i<len(email_id):
-    print 'Mail No. :',i
+    print 'Mail No. :',email_id[i]
     print '\nFrom :'
     print allfroms[i]
     print '\nSubject : '
     print allsubs[i]
+    cursor.execute('INSERT INTO mails VALUES (%s,"internatrails@gmail.com",%s,%s,"+919940138729",NULL)',(email_id[i],allfroms[i],allsubs[i]))
+    print "Inserted row into database smsmail!" 
     i+=1
 
 '''for i in email_id:
