@@ -30,7 +30,8 @@ for row in data:
 
 for ids,mess in msg:
     print ids,mess
-    gsm.send_sms('+919840756217',mess)
+    gsm.send_sms('+919940138729',mess)
     cursor.execute('update mails set sent=1 where mailid=%s',ids)
 
 #print mailid,email,fromid,subject,mobile,idm
+
